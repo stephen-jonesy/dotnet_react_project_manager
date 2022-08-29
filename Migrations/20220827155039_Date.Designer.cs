@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DotnetReact.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20220823151228_OwnerId")]
-    partial class OwnerId
+    [Migration("20220827155039_Date")]
+    partial class Date
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -105,6 +105,9 @@ namespace DotnetReact.Migrations
 
                     b.Property<string>("OwnerID")
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("createdAt")
+                        .HasColumnType("datetime2");
 
                     b.HasKey("Id");
 

@@ -56,7 +56,7 @@ export class FetchData extends Component {
     const token = await authService.getAccessToken();
     const user = await authService.getUser();
     console.log(user.sub);
-    const response = await fetch(`https://localhost:7115/todoitems/${user.sub}`, {
+    const response = await fetch(`todoitems/${user.sub}`, {
       headers: !token ? {} : { 
         'Authorization': `Bearer ${token}`
       }

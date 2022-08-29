@@ -7,18 +7,6 @@ using DotnetReact.Models;
 
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Services.AddCors(options =>
-{
-    options.AddPolicy(name: "MyAllowAllHeadersPolicy",
-        policy =>
-        {
-            //policy.WithOrigins("https://cors-test.codehappy.dev")
-            policy.AllowAnyOrigin()
-            .AllowAnyHeader()
-            .AllowAnyMethod();
-        });
-});
-
 // Add services to the container.
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
@@ -53,8 +41,6 @@ else
 app.UseHttpsRedirection();
 app.UseStaticFiles();
 app.UseRouting();
-
-app.UseCors("MyAllowAllHeadersPolicy");
 
 app.UseAuthentication();
 app.UseIdentityServer();
