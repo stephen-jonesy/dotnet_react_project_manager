@@ -1,0 +1,304 @@
+
+@use 'variables';
+
+.App {
+  height: 100vh;
+  background-color: variables.$background-secondary;
+
+}
+
+.sub-header {
+  height: 59px;
+  width: 100%;
+  background-color: variables.$background-primary;
+  margin-left: 1px;
+  box-shadow: 0px 0px 5px 1px rgba(89, 109, 125, 0.1);
+
+}
+
+// list page
+
+.list-container {
+  position: relative;
+  width: 100%;
+  max-width: 875px;
+  margin: 25px 30px 0 30px;
+
+}
+
+.list-container ul {
+  padding: 0;
+
+}
+
+.project-button {
+  position: absolute;
+  right: -30px;
+  width: 160px;
+  height: 30px;
+  background: rgba(9, 199, 225, 0.9);
+  color: white;
+  border: none;
+  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+  border-radius: 4px;
+  font-weight: 400;
+  font-size: 16px;
+
+}
+
+// Project toolbar
+
+.project-toolbar  {
+  text-align: center;
+
+}
+
+.project-toolbar button {
+  all: unset;
+  cursor: pointer;
+  font-size: 12px;
+  font-weight: 600;
+  color: rgba(43, 52, 59, 0.8);
+  text-align: center;
+
+}
+
+// Project
+.project-container{
+  position: relative;
+  height: 60px;
+  width: 100%;
+  margin-bottom: 26px;
+
+}
+
+.new-project-container {
+  margin-top: 70px;
+}
+
+.project {
+  position: absolute;
+  top: 0;
+  text-align: center;
+  display: flex;  
+  
+  font-size: 13px;
+  height: 100%;
+  width: 100%;
+
+  background: #FFFFFF;
+  box-shadow: 0px 0px 5px 1px rgba(89, 109, 125, 0.1);
+  border-radius: 20px;
+  color: #48484E;
+  font-style: normal;
+  font-weight: 400;
+
+  .devider {
+    height: 38px;
+    border-right: 1px solid rgba(192, 189, 189, 0.4);
+  }
+
+ .completed-btn-container {
+  display: flex;  
+  align-items: center;
+  justify-content: center;
+ }
+
+  .completed-btn {
+    display: flex;  
+    align-items: center;
+    justify-content: center;
+    
+    height: 24px;
+    width: 26px;
+    border-radius: 20px;
+    background: #48484E;  
+
+    svg {
+      pointer-events: none;
+    }
+
+  }
+
+  .priority-btn {
+    all: unset;
+    width: 60px;
+    height: 22px;
+    color: white;
+    border-radius: 26px;
+    font-style: normal;
+    font-weight: 600;
+    font-size: 12px;
+  }
+
+}
+
+.project div {
+  margin: auto;
+}
+
+.date-container {
+  margin-top: 17px;
+
+}
+
+.react-datepicker__navigation {
+  z-index: 100;
+}
+
+.react-datepicker {
+  z-index: 999 ;
+}
+.example-custom-input {
+  height: 60px;
+}
+
+.shadow-container {
+  position: absolute;
+  top: 4px;
+  width: 100%;
+  height: 100%;
+  background: #C0BDBD;
+  box-shadow: 0px 0px 5px 1px rgba(89, 109, 125, 0.1);
+  border-radius: 20px;
+
+}
+
+.grab-icon {
+  position: absolute;  
+  top: 19px;
+  color: #48484ecc;
+  z-index: 10;
+  height: 22px;
+  width: 16px;
+  cursor: grab;
+  display: flex;
+  align-items: center;
+}
+
+
+.note-btn {
+  all: unset;
+  background-color: transparent !important;
+  border-color: transparent !important;
+  color: #48484e99;
+
+}
+
+svg {
+  pointer-events: none;
+}
+
+.pencil-icon {
+  display: none;
+  position: absolute;
+  right: 5px;
+  top: 0;
+  bottom: 0;
+
+  &:hover {
+    color: variables.$active;
+    cursor: pointer;
+  }
+}
+
+.name-column {
+  position: relative;
+  &:hover {
+    .pencil-icon {
+      display: block;
+
+    }
+  }
+}
+
+.project-name-input {
+  position: absolute;
+  width: 100%;
+  height: 25px;
+  top: -12px;
+  bottom: 0;  
+  right: 0;
+}
+
+// new project
+
+.create-btn {
+  height: 80%;
+  width: 80%;
+  font-size: 10px !important;
+  background-color: variables.$active !important;
+  border-color: variables.$active !important;
+}
+
+//Calendar
+
+.date-container {
+  all: unset;
+  margin-top: 21px;
+
+}
+
+.react-datepicker__navigation {
+  z-index: 100;
+}
+
+.react-datepicker {
+  z-index: 999 ;
+}
+
+.example-custom-input {
+  height: 60px;
+}
+
+// Note
+
+.note-active {
+  color: variables.$active;
+  opacity: .8;
+}
+
+.toast {
+  z-index: 999 !important;
+}
+.toast-body {
+  background-color: white;
+}
+
+.edit-container {
+  display: flex;
+  justify-content: center;
+  margin: 0 !important;
+}
+
+.edit-button {
+  all: unset;
+  height: 20px;
+  margin-top: 10px !important;
+  display: flex;
+  justify-content: center;
+  font-weight: bold;
+  svg {
+    margin-top: 3px;
+  }
+}
+
+.textarea-container {
+  display: flex;
+  flex-direction: column;
+}
+
+textarea {
+  resize: none;
+  overflow: hidden;
+  min-height: 50px;
+  max-height: 100px;
+}
+
+@media screen and (max-width: 1200px) {
+
+  .project-button {
+      margin-right: 30px;
+  }
+
+}
