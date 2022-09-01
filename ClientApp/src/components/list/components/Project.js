@@ -11,23 +11,23 @@ import { GripVertical, Sticky, Trash, PencilSquare} from "react-bootstrap-icons"
 
 export function Project({ id, projectList }) {
     const project = () => {
-        return projectList.find((project) => project.Id === id);
+        return projectList.find((project) => project.id === id);
     };
-    const {projectName, dueDate, isComplete, note, priority, status, Id} = project();
+    const {name, dueDate, isComplete, note, priority, status, Id} = project();
     const dispatch = useDispatch();
     const [showA, setShowA] = useState(false);
     const toggleShowA = () => setShowA(!showA);
     const [showNameInput, setShowNameInput] = useState(false);
     const toggleShowNameInput = () => setShowNameInput(!showNameInput);
-    const [projectNameValue, setName] = useState(projectName);
+    const [projectNameValue, setName] = useState(name);
     const [noteValue, setNote] = useState(note);
     const [startDate, setStartDate] = useState(new Date());
     const checkIcon = <FontAwesomeIcon icon={faCheck} />
     const gripIcon = <FontAwesomeIcon icon={faGrip} />
     const projectPropObject = {
-        projectName: projectName,
+        name: name,
         note: note,
-        Id: Id
+        id: id
     }
     
     const eventHandler = (e) => {
@@ -81,7 +81,6 @@ export function Project({ id, projectList }) {
     }
 
     const showNameInputFunct = () => {
-
         var strFirstThree = projectNameValue.substring(0,15);
 
         if (!showNameInput) {

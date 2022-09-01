@@ -8,7 +8,7 @@ import { Row, Toast} from 'react-bootstrap';
 import { PencilSquare } from "react-bootstrap-icons";
 
 export function Note( {isNewProject, project, changeNote}) {
-    const {projectName, dueDate, isComplete, note, priority, status, Id} = project;
+    const {name, dueDate, isComplete, note, priority, status, id} = project;
 
     const [showNote, setShowNote] = useState(false);
     const [noteValue, setNote] = useState(note);
@@ -32,7 +32,7 @@ export function Note( {isNewProject, project, changeNote}) {
 
         if (isNewProject === false) {
 
-            dispatch(updateNote([Id, noteValue]));
+            dispatch(updateNote([id, noteValue]));
             toggleshowNote();
             toggleShowNoteTextarea();
         }
@@ -65,7 +65,7 @@ export function Note( {isNewProject, project, changeNote}) {
                     alt=""
                     />
                     <strong className="me-auto">Note</strong>
-                    <small>{projectName}</small>
+                    <small>{name}</small>
                 </Toast.Header>
                 <Toast.Body>
                     {showNameInputFunct()}

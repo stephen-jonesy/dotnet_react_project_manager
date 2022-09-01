@@ -5,14 +5,14 @@ import { ProjectToolbar } from './components/ProjectToolbar';
 import { Project } from './components/Project';
 import Button from 'react-bootstrap/Button';
 import { ReactSortable } from "react-sortablejs";
+import { fetchUserById } from '../../projects/projectsSlice';
 
 export function List() {
     const selectProjects = (state) => state.projects;
     const dispatch = useDispatch();
     const projects = useSelector(selectProjects);
-    console.log(projects);
     const [show, setShow] = useState(false);
-    const array = projects.projects.map((item) => ({
+    const array = projects.map((item) => ({
         ...item,
         selected: false       
     }));
@@ -22,7 +22,14 @@ export function List() {
     };
 
     useEffect(() => {
+        dispatch(fetchUserById());
+
+    }, []);
+
+    useEffect(() => {
+
         setList(array);
+
     }, [JSON.stringify(array)]);
 
     const renderNewProjectForm = () => {
@@ -51,7 +58,7 @@ export function List() {
             <ul className="">
                 <ReactSortable list={list} setList={setList}>
                     {list.map((project) => (
-                        <Project key={project.Id} id={project.Id} projectList={list} />
+                        <Project key={project.id} id={project.id} projectList={list} />
                     ))}
                 </ReactSortable>
             </ul>

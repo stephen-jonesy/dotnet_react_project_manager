@@ -18,15 +18,15 @@ export function NewProjectForm({ toggleShow }) {
 
     const [showA, setShowA] = useState(false);
     const toggleShowA = () => setShowA(!showA);
-    const [projectName, setName] = useState('');
+    const [name, setName] = useState('');
     const [priority, setPriority] = useState('None');
     const [status, setStatus] = useState('None');
     const [noteValue, setNote] = useState('');
     const [dueDate, setDueDate] = useState(new Date());
     const projectPropObject = {
-        projectName: 'New Project',
+        name: 'New Project',
         note: '',
-        Id: null
+        id: null
     }
     
     moment().format();
@@ -45,8 +45,8 @@ export function NewProjectForm({ toggleShow }) {
         const today  = new Date();
         const formatedDueDate = moment(dueDate).format('YYYY/MM/DD');
         const projectObj = {
-            projectName: projectName, 
-            small_id: small_id, 
+            name: name, 
+            id: small_id, 
             dueDate: formatedDueDate, 
             priority: priority, 
             status: status,
@@ -72,7 +72,7 @@ export function NewProjectForm({ toggleShow }) {
                     <div className="col name-column">
                         <input 
                             placeholder="New Project"  
-                            value={projectName}   
+                            value={name}   
                             onChange={(e) => {setName(e.target.value)}} 
                             required
                             

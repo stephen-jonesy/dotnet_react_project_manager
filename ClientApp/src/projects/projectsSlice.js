@@ -1,24 +1,30 @@
 import {  createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-  
+import { projects } from './projectsAPI';
+
 export const fetchUserById = createAsyncThunk(
-    'users/fetchByIdStatus',
-    async (userId) => {
-        const response = await userAPI.fetchById(userId)
-        return response.data
+    'todoitems',
+    async () => {
+
+        const response = await fetch(`/todoitems/c5c73eef-e929-42a9-9091-549844f8e83b`, {
+            headers: {} 
+          });
+          const data = await response.json();
+          console.log(data);
+          return data
     }
 )
 
 export const projectsSlice = createSlice({
     name: 'projects',
-    initialState: {projects: [], loading: true},
+    initialState: [],
     reducers: {
         addProject: (state, action) => {
             
-            const {projectName, small_id, dueDate, priority, status, createdAt, note} = action.payload;
+            const {name, id, dueDate, priority, status, createdAt, note} = action.payload;
 
             const project = {
-				Id: small_id,
-                projectName: projectName,
+				id: id,
+                name: name,
                 createdAt: createdAt,
                 isComplete: false,
                 dueDate: dueDate,
@@ -33,12 +39,12 @@ export const projectsSlice = createSlice({
 
         removeProject: (state, action) => {
 
-            return state.filter((project) => project.Id !== action.payload);
+            return state.filter((project) => project.id !== action.payload);
         },
 
         toggleCompleted: (state, action) => {
             return state.map((project) =>
-                project.Id === action.payload ? {...project, isComplete: !project.isComplete} : project);
+                project.id === action.payload ? {...project, isComplete: !project.isComplete} : project);
 
         },
 
@@ -46,7 +52,7 @@ export const projectsSlice = createSlice({
             const [id, priority] = action.payload;
 
             return state.map((project) =>
-                project.Id === id ? {...project, priority: priority} : project);
+                project.id === id ? {...project, priority: priority} : project);
 
         },
 
@@ -54,7 +60,7 @@ export const projectsSlice = createSlice({
             const [id, status] = action.payload;
 
             return state.map((project) =>
-                project.Id === id ? {...project, status: status} : project);
+                project.id === id ? {...project, status: status} : project);
 
         },
 
@@ -63,27 +69,26 @@ export const projectsSlice = createSlice({
 
 
             return state.map((project) =>
-                project.Id === id ? {...project, projectName: projectName} : project);
+                project.id === id ? {...project, projectName: projectName} : project);
         },
 
         updateCreatedDate: (state, action) => {
             const [id, createdAt] = action.payload;
             return state.map((project) =>
-            project.Id === id ? {...project, createdAt: createdAt} : project);
+            project.id === id ? {...project, createdAt: createdAt} : project);
         },
 
         updateDueDate: (state, action) => {
             const [id, dueDate] = action.payload;
             return state.map((project) =>
-            project.Id === id ? {...project, dueDate: dueDate} : project);
+            project.id === id ? {...project, dueDate: dueDate} : project);
         },
 
         updateNote: (state, action) => {
             const [id, note] = action.payload;
 
-
             return state.map((project) =>
-            project.Id === id ? {...project, note: note} : project);
+            project.id === id ? {...project, note: note} : project);
 
         },
 
@@ -190,9 +195,18 @@ export const projectsSlice = createSlice({
     // Add reducers for additional action types here, and handle loading state as needed
     builder.addCase(fetchUserById.fulfilled, (state, action) => {
         // Add user to the state array
-        state.projects.push(action.payload)
-        state.loading = false;
+        state = action.payload
+        return state;
+
     })
+    .addCase(fetchUserById.rejected, (state, action) => {
+        return (state = {
+            ...state,
+            status: "failed",
+          });
+
+      })
+      
     }
 });
 
