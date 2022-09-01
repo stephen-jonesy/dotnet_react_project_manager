@@ -8,9 +8,10 @@ import { ReactSortable } from "react-sortablejs";
 import { fetchUserById } from '../../projects/projectsSlice';
 
 export function List() {
-    const selectProjects = (state) => state.projects;
+    const selectProjects = (state) => state.projects.projects;
     const dispatch = useDispatch();
     const projects = useSelector(selectProjects);
+    console.log(projects);
     const [show, setShow] = useState(false);
     const array = projects.map((item) => ({
         ...item,

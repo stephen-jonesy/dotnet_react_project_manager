@@ -113,7 +113,8 @@ namespace DotnetReact.Controllers;
             _context.TodoItem.Remove(todoItem);
             await _context.SaveChangesAsync();
 
-            return NoContent();
+            return Ok(id);
+
         }
 
         private bool TodoItemExists(long id)

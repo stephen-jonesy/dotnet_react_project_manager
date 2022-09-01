@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { removeProject, toggleCompleted, togglePriority, toggleStatus, updateProjectName, updateNote, updateCreatedDate, updateDueDate } from '../../../projects/projectsSlice';
+import { removeProject, toggleCompleted, togglePriority, toggleStatus, updateProjectName, updateNote, updateCreatedDate, updateDueDate, deletePropjectById } from '../../../projects/projectsSlice';
 import { Calendar } from './Calendar';
 import { Note } from './Note';
 import {Button, OverlayTrigger, Overlay, Tooltip, Toast} from 'react-bootstrap';
@@ -13,7 +13,7 @@ export function Project({ id, projectList }) {
     const project = () => {
         return projectList.find((project) => project.id === id);
     };
-    const {name, dueDate, isComplete, note, priority, status, Id} = project();
+    const {name, dueDate, isComplete, note, priority, status} = project();
     const dispatch = useDispatch();
     const [showA, setShowA] = useState(false);
     const toggleShowA = () => setShowA(!showA);
@@ -39,6 +39,7 @@ export function Project({ id, projectList }) {
 
         if (e.id === "delete-btn") {
             dispatch(removeProject(id));
+            dispatch(deletePropjectById(id));
 
         };
 

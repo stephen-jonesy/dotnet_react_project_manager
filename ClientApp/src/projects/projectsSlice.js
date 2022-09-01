@@ -1,22 +1,49 @@
-import {  createSlice, createAsyncThunk } from '@reduxjs/toolkit';
+import {  createSlice, createAsyncThunk, current } from '@reduxjs/toolkit';
 import { projects } from './projectsAPI';
+import authService from '../components/api-authorization/AuthorizeService';
+
+const initialState = {
+    status: 'idle',
+    projects: [],
+    error: null,
+  
+  }
 
 export const fetchUserById = createAsyncThunk(
     'todoitems',
     async () => {
 
-        const response = await fetch(`/todoitems/c5c73eef-e929-42a9-9091-549844f8e83b`, {
-            headers: {} 
-          });
-          const data = await response.json();
-          console.log(data);
-          return data
+        const token = await authService.getAccessToken();
+        const user = await authService.getUser();
+        console.log(user.sub);
+        const response = await fetch(`todoitems/${user.sub}`, {
+          headers: !token ? {} : { 
+            'Authorization': `Bearer ${token}`
+          }
+        });
+        const data = await response.json();
+        console.log(data);
+        return data
+
+    }
+)
+
+export const deletePropjectById = createAsyncThunk(
+    'todoitems/delete',
+    async (id) => {
+        const user = await authService.getUser();
+        console.log(user.sub);
+        const response = await fetch(`todoitems/${id}`, { method: 'DELETE' })
+        const data = await response.json();
+        console.log(data);
+        return data;
+
     }
 )
 
 export const projectsSlice = createSlice({
     name: 'projects',
-    initialState: [],
+    initialState,
     reducers: {
         addProject: (state, action) => {
             
@@ -38,8 +65,9 @@ export const projectsSlice = createSlice({
         },
 
         removeProject: (state, action) => {
-
-            return state.filter((project) => project.id !== action.payload);
+            console.log(current(state.projects))
+            const filterProjects = state.projects.filter((project) => project.id !== action.payload);
+            state.projects = filterProjects;
         },
 
         toggleCompleted: (state, action) => {
@@ -193,9 +221,16 @@ export const projectsSlice = createSlice({
     },
     extraReducers: (builder) => {
     // Add reducers for additional action types here, and handle loading state as needed
+    builder.addCase(fetchUserById.pending, (state, action) => {
+        // Add user to the state array
+        state.status = 'loading';
+
+    })
     builder.addCase(fetchUserById.fulfilled, (state, action) => {
         // Add user to the state array
-        state = action.payload
+        state.status = 'loading';
+        state.status = 'idle';
+        state.projects = action.payload
         return state;
 
     })
@@ -204,6 +239,16 @@ export const projectsSlice = createSlice({
             ...state,
             status: "failed",
           });
+
+      })
+      .addCase(deletePropjectById.fulfilled, (state, action) => {
+          console.log(action.payload);
+          
+        return state;
+
+      })
+      .addCase(deletePropjectById.rejected, (state, action) => {
+        return state;
 
       })
       
