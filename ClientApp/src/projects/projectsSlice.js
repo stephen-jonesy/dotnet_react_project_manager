@@ -4,6 +4,7 @@ import authService from '../components/api-authorization/AuthorizeService';
 
 const initialState = {
     status: 'idle',
+    loading: false,
     projects: [],
     error: null,
   
@@ -60,63 +61,72 @@ export const projectsSlice = createSlice({
                 note: note 
 			};
 
-			state.push(project);
+			state.projects.push(project);
 
         },
 
         removeProject: (state, action) => {
-            console.log(current(state.projects))
+            console.log(current(state.projects));
             const filterProjects = state.projects.filter((project) => project.id !== action.payload);
             state.projects = filterProjects;
         },
 
         toggleCompleted: (state, action) => {
-            return state.map((project) =>
+            const filterProjects = state.projects.map((project) =>
                 project.id === action.payload ? {...project, isComplete: !project.isComplete} : project);
-
+            state.projects = filterProjects;
+            
         },
 
         togglePriority: (state, action) => {
             const [id, priority] = action.payload;
 
-            return state.map((project) =>
+            const filterProjects = state.projects.map((project) =>
                 project.id === id ? {...project, priority: priority} : project);
+            state.projects = filterProjects;
 
         },
 
         toggleStatus: (state, action) => {
             const [id, status] = action.payload;
 
-            return state.map((project) =>
+            const filterProjects = state.projects.map((project) =>
                 project.id === id ? {...project, status: status} : project);
+            state.projects = filterProjects;
 
         },
 
         updateProjectName: (state,action) => {
             const [id, projectName] = action.payload;
 
-
-            return state.map((project) =>
+            const filterProjects = state.projects.map((project) =>
                 project.id === id ? {...project, projectName: projectName} : project);
+            state.projects = filterProjects;
+
         },
 
         updateCreatedDate: (state, action) => {
             const [id, createdAt] = action.payload;
-            return state.map((project) =>
-            project.id === id ? {...project, createdAt: createdAt} : project);
+            const filterProjects = state.projects.map((project) =>
+                project.id === id ? {...project, createdAt: createdAt} : project);
+            state.projects = filterProjects;
+
         },
 
         updateDueDate: (state, action) => {
             const [id, dueDate] = action.payload;
-            return state.map((project) =>
-            project.id === id ? {...project, dueDate: dueDate} : project);
+            const filterProjects = state.projects.map((project) =>
+                project.id === id ? {...project, dueDate: dueDate} : project);
+            state.projects = filterProjects;
+
         },
 
         updateNote: (state, action) => {
             const [id, note] = action.payload;
 
-            return state.map((project) =>
-            project.id === id ? {...project, note: note} : project);
+            const filterProjects =  state.projects.map((project) =>
+                project.id === id ? {...project, note: note} : project);
+            state.projects = filterProjects;
 
         },
 
@@ -161,18 +171,17 @@ export const projectsSlice = createSlice({
         sortProjects: (state, action) => {
 
             const sortType = action.payload;
-
             if(sortType === 'dueDate') {
-                const sorted = [...state].sort(function(a, b) {
+                const sorted = [...state.projects].sort(function(a, b) {
                     var dateA = new Date(a.dueDate), dateB = new Date(b.dueDate);
                     return dateA - dateB;
                 });
         
-                return sorted;
+                state.projects = sorted;
 
             } 
             if(sortType === 'Priority') {
-                const sorted = [...state].sort((a, b) => {
+                const sorted = [...state.projects].sort((a, b) => {
                     const sorter = {
                       "None": 0,
                       "Low": 1,
@@ -183,36 +192,35 @@ export const projectsSlice = createSlice({
                 });
     
     
-                return sorted;
+                state.projects = sorted;
 
             } 
             if(sortType === 'Notes') {
-                const sorted = [...state].sort((a, b) => {
+                const sorted = [...state.projects].sort((a, b) => {
                     return b.note.length - a.note.length;
 
                 });
     
-    
-                return sorted;
+                state.projects = sorted;
 
             } 
             if(sortType === 'timeline') {
-                const sorted = [...state].sort((a, b) => {
+                const sorted = [...state.projects].sort((a, b) => {
                     return b.timeline - a.timeline;
                 });    
     
-                return sorted;
+                state.projects = sorted;
 
             } 
             
             else {
-                const sorted = [...state].sort(function(a, b){
+                const sorted = [...state.projects].sort(function(a, b){
                     if(a[sortType] < b[sortType]) { return -1; }
                     if(a[sortType] > b[sortType]) { return 1; }
                     return 0;
                 });
     
-                return sorted;
+                state.projects = sorted;
 
             }
             
@@ -223,15 +231,13 @@ export const projectsSlice = createSlice({
     // Add reducers for additional action types here, and handle loading state as needed
     builder.addCase(fetchUserById.pending, (state, action) => {
         // Add user to the state array
-        state.status = 'loading';
+        state.loading = true;
 
     })
     builder.addCase(fetchUserById.fulfilled, (state, action) => {
         // Add user to the state array
-        state.status = 'loading';
-        state.status = 'idle';
+        state.loading = false;
         state.projects = action.payload
-        return state;
 
     })
     .addCase(fetchUserById.rejected, (state, action) => {

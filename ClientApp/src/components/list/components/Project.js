@@ -66,7 +66,6 @@ export function Project({ id, projectList }) {
         
     }
 
-
     const updateCreatedAt = (date) => {
         setStartDate(date);
         const formatedDueDate = moment(date).format('YYYY/MM/DD');
