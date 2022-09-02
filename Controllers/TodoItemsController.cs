@@ -33,6 +33,7 @@ namespace DotnetReact.Controllers;
             var contacts = (from c in _context.TodoItem
             select c);
             var List = contacts.Where(c => c.OwnerID == id);
+            Console.WriteLine( "get");
 
           if (_context.TodoItem == null)
           {
@@ -85,14 +86,16 @@ namespace DotnetReact.Controllers;
         [HttpPost]
         public async Task<ActionResult<TodoItem>> PostTodoItem(TodoItem todoItem)
         {
+                        Console.WriteLine( "post");
+
           if (_context.TodoItem == null)
           {
               return Problem("Entity set 'MyDbContext.TodoItem'  is null.");
           }
+          Console.WriteLine(todoItem);
             var currentUserId = UserManager.GetUserId(User);
             _context.TodoItem.Add(todoItem);
             await _context.SaveChangesAsync();
-            Console.WriteLine( "current user", User );
             return CreatedAtAction("GetTodoItem", new { id = todoItem.Id }, todoItem);
         }
 
@@ -100,6 +103,8 @@ namespace DotnetReact.Controllers;
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteTodoItem(long id)
         {
+                        Console.WriteLine( "delete");
+
             if (_context.TodoItem == null)
             {
                 return NotFound();

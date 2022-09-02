@@ -3,7 +3,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import {Button, OverlayTrigger, Tooltip, Toast} from 'react-bootstrap';
 import CloseButton from 'react-bootstrap/CloseButton';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { addProject } from '../../../projects/projectsSlice.js';
+import { addProject,createPropjectById } from '../../../projects/projectsSlice.js';
 import DatePicker from "react-datepicker";
 import { Note } from './Note';
 import "react-datepicker/dist/react-datepicker.css";
@@ -54,7 +54,7 @@ export function NewProjectForm({ toggleShow }) {
             note: noteValue 
         };
 
-        dispatch(addProject(projectObj));
+        dispatch(createPropjectById());
 
         toggleShow();
 

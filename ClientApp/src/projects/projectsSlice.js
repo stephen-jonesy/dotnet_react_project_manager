@@ -8,7 +8,7 @@ const initialState = {
     projects: [],
     error: null,
   
-  }
+}
 
 export const fetchUserById = createAsyncThunk(
     'todoitems',
@@ -38,6 +38,42 @@ export const deletePropjectById = createAsyncThunk(
         const data = await response.json();
         console.log(data);
         return data;
+
+    }
+)
+export const createPropjectById = createAsyncThunk(
+    'todoitems/post',
+    async () => {
+
+        const project = {
+            OwnerID: "c5c73eef-e929-42a9-9091-549844f8e83b",
+            Name: "project",
+            IsComplete: false,
+            createdAt:"2018-03-29T13:34:00.0000000",
+            dueDate: "2023-08-29",
+            priority: "Low",
+            status: "Stuck",
+            note: ""
+        }
+        try {
+            const config = {
+                method: 'POST',
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(project)
+            }
+            const data = await fetch('todoitems', config);
+            //const json = await response.json()
+                //return json
+                console.log(data);
+                return data
+
+        } catch (error) {
+                //
+                console.log(error)
+        }
 
     }
 )
@@ -257,6 +293,16 @@ export const projectsSlice = createSlice({
         return state;
 
       })
+      .addCase(createPropjectById.fulfilled, (state, action) => {
+        
+      return state;
+
+    })
+    .addCase(createPropjectById.rejected, (state, action) => {
+
+      return state;
+
+    })
       
     }
 });
