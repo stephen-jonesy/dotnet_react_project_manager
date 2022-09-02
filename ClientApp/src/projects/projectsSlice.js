@@ -1,6 +1,7 @@
 import {  createSlice, createAsyncThunk, current } from '@reduxjs/toolkit';
 import { projects } from './projectsAPI';
 import authService from '../components/api-authorization/AuthorizeService';
+import { v4 as uuid } from 'uuid';
 
 const initialState = {
     status: 'idle',
@@ -41,20 +42,13 @@ export const deletePropjectById = createAsyncThunk(
 
     }
 )
+
 export const createPropjectById = createAsyncThunk(
     'todoitems/post',
-    async () => {
+    async (project) => {
+        const user = await authService.getUser();
+        project.OwnerID = user.sub;
 
-        const project = {
-            OwnerID: "c5c73eef-e929-42a9-9091-549844f8e83b",
-            Name: "project",
-            IsComplete: false,
-            createdAt:"2018-03-29T13:34:00.0000000",
-            dueDate: "2023-08-29",
-            priority: "Low",
-            status: "Stuck",
-            note: ""
-        }
         try {
             const config = {
                 method: 'POST',
@@ -65,10 +59,9 @@ export const createPropjectById = createAsyncThunk(
                 body: JSON.stringify(project)
             }
             const data = await fetch('todoitems', config);
-            //const json = await response.json()
+            const json = await data.json()
                 //return json
-                console.log(data);
-                return data
+                return json
 
         } catch (error) {
                 //
@@ -82,24 +75,6 @@ export const projectsSlice = createSlice({
     name: 'projects',
     initialState,
     reducers: {
-        addProject: (state, action) => {
-            
-            const {name, id, dueDate, priority, status, createdAt, note} = action.payload;
-
-            const project = {
-				id: id,
-                name: name,
-                createdAt: createdAt,
-                isComplete: false,
-                dueDate: dueDate,
-                priority: priority,
-                status: status,
-                note: note 
-			};
-
-			state.projects.push(project);
-
-        },
 
         removeProject: (state, action) => {
             console.log(current(state.projects));
@@ -294,7 +269,9 @@ export const projectsSlice = createSlice({
 
       })
       .addCase(createPropjectById.fulfilled, (state, action) => {
-        
+        console.log(action.payload);
+        state.projects.push(action.payload);
+
       return state;
 
     })

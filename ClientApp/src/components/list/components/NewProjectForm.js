@@ -38,23 +38,25 @@ export function NewProjectForm({ toggleShow }) {
 	const addProjectButton = (e) => {
         e.preventDefault();        
 
-        const createdAt = moment().format('YYYY/MM/DD');
+        const createdAt = moment().format('YYYY/MM/DD').replaceAll("/","-");
         const unique_id = uuid();
         const small_id = unique_id.slice(0,8);
         const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
         const today  = new Date();
-        const formatedDueDate = moment(dueDate).format('YYYY/MM/DD');
+        const formatedDueDate = moment(dueDate).format('YYYY/MM/DD').replaceAll("/","-");
+        console.log(createdAt);
         const projectObj = {
-            name: name, 
-            id: small_id, 
-            dueDate: formatedDueDate, 
-            priority: priority, 
+            name: name,
+            IsComplete: false,
+            createdAt: createdAt,
+            dueDate: formatedDueDate,
+            priority: priority,
             status: status,
-            createdAt: createdAt, 
-            note: noteValue 
+            note: noteValue
+
         };
 
-        dispatch(createPropjectById());
+        dispatch(createPropjectById(projectObj));
 
         toggleShow();
 
@@ -134,7 +136,6 @@ export function NewProjectForm({ toggleShow }) {
 
                     {/* < Note isNewProject={true} project={null} /> */}
                     < Note isNewProject={true} project={projectPropObject} changeNote={changeNote} />
-
 
 
                     {/* submit column */}
