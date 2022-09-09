@@ -3,7 +3,6 @@ import { useSelector, useDispatch, shallowEqual } from 'react-redux';
 import { NewProjectForm } from './components/NewProjectForm';
 import { ProjectToolbar } from './components/ProjectToolbar';
 import { Project } from './components/Project';
-import Button from 'react-bootstrap/Button';
 import { ReactSortable } from "react-sortablejs";
 import { fetchUserById } from '../../projects/projectsSlice';
 

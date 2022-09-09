@@ -1,6 +1,6 @@
 import React, { useState, useRef } from 'react';
 import { useDispatch } from 'react-redux';
-import { updateNote } from '../../../projects/projectsSlice';
+import { updateNote, updatePropjectById } from '../../../projects/projectsSlice';
 import "react-datepicker/dist/react-datepicker.css";
 import moment from 'moment';
 import { Sticky } from "react-bootstrap-icons";
@@ -8,7 +8,7 @@ import { Row, Toast} from 'react-bootstrap';
 import { PencilSquare } from "react-bootstrap-icons";
 
 export function Note( {isNewProject, project, changeNote}) {
-    const {name, dueDate, isComplete, note, priority, status, id} = project;
+    const {name, dueDate, isComplete, note, priority, status, Id} = project;
 
     const [showNote, setShowNote] = useState(false);
     const [noteValue, setNote] = useState(note);
@@ -31,8 +31,9 @@ export function Note( {isNewProject, project, changeNote}) {
         e.preventDefault();     
 
         if (isNewProject === false) {
-
-            dispatch(updateNote([id, noteValue]));
+            project.note = noteValue;
+            dispatch(updateNote([Id, noteValue]));
+            dispatch(updatePropjectById(project));  
             toggleshowNote();
             toggleShowNoteTextarea();
         }

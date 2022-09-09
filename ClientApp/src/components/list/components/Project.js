@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { removeProject, toggleCompleted, togglePriority, toggleStatus, updateProjectName, updateNote, updateCreatedDate, updateDueDate, deletePropjectById } from '../../../projects/projectsSlice';
+import { removeProject, toggleCompleted, togglePriority, toggleStatus, updateProjectName, updateNote, updateCreatedDate, updateDueDate, deletePropjectById, updatePropjectById } from '../../../projects/projectsSlice';
 import { Calendar } from './Calendar';
 import { Note } from './Note';
 import {Button, OverlayTrigger, Overlay, Tooltip, Toast} from 'react-bootstrap';
@@ -13,7 +13,9 @@ export function Project({ id, projectList }) {
     const project = () => {
         return projectList.find((project) => project.id === id);
     };
-    const {name, dueDate, isComplete, note, priority, status} = project();
+    console.log(project());
+    const {Id, name, dueDate, isComplete, createdAt, note, priority, status} = project();
+    
     const dispatch = useDispatch();
     const [showA, setShowA] = useState(false);
     const toggleShowA = () => setShowA(!showA);
@@ -29,26 +31,43 @@ export function Project({ id, projectList }) {
         note: note,
         id: id
     }
+    const projectObj = {
+        Id: id,
+        name: name,
+        IsComplete: isComplete,
+        createdAt: createdAt,
+        dueDate: dueDate,
+        priority: priority,
+        status: status,
+        note: note
+
+    };
     
     const eventHandler = (e) => {
 
         if (e.id === "completed-btn") {
-            dispatch(toggleCompleted(id));
+            console.log(projectObj);
+            projectObj.IsComplete = !isComplete;
+            dispatch(toggleCompleted(id));  
+            dispatch(updatePropjectById(projectObj));  
 
         };
 
         if (e.id === "delete-btn") {
-            dispatch(removeProject(id));
             dispatch(deletePropjectById(id));
 
         };
 
         if (e.id === "priority-toggle-btn") {
+            projectObj.priority = e.innerText;
             dispatch(togglePriority([id, e.innerText]));
+            dispatch(updatePropjectById(projectObj));  
 
         };
         if (e.id === "status-toggle-btn") {
+            projectObj.status = e.innerText;
             dispatch(toggleStatus([id, e.innerText]));
+            dispatch(updatePropjectById(projectObj));  
 
         };
 
@@ -58,9 +77,10 @@ export function Project({ id, projectList }) {
         e.preventDefault();     
 
         if (e.target.id === "project-name-submit") {
-
+            projectObj.name = projectNameValue;
             dispatch(updateProjectName([id, projectNameValue]));
             toggleShowNameInput();
+            dispatch(updatePropjectById(projectObj));  
 
         }
         
@@ -75,8 +95,11 @@ export function Project({ id, projectList }) {
 
     const updateDue = (date) => {
         setStartDate(date);
-        const formatedDueDate = moment(date).format('YYYY/MM/DD');
+        const formatedDueDate = moment(date).format('YYYY/MM/DD').replaceAll("/","-");
+        projectObj.dueDate = formatedDueDate;
+
         dispatch(updateDueDate([id, formatedDueDate]));
+        dispatch(updatePropjectById(projectObj));  
 
     }
 
@@ -162,7 +185,7 @@ export function Project({ id, projectList }) {
 
                 {/* Notes column */}
 
-                < Note isNewProject={false} project={projectPropObject} />
+                < Note isNewProject={false} project={projectObj} />
 
                 <div className="devider"></div>
 

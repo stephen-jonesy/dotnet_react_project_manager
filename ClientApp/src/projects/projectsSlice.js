@@ -4,7 +4,8 @@ import authService from '../components/api-authorization/AuthorizeService';
 import { v4 as uuid } from 'uuid';
 
 const initialState = {
-    status: 'idle',
+    response: null,
+    message: '',
     loading: false,
     projects: [],
     error: null,
@@ -19,13 +20,16 @@ export const fetchUserById = createAsyncThunk(
         const user = await authService.getUser();
         console.log(user.sub);
         const response = await fetch(`todoitems/${user.sub}`, {
-          headers: !token ? {} : { 
-            'Authorization': `Bearer ${token}`
-          }
-        });
-        const data = await response.json();
-        console.log(data);
-        return data
+            headers: !token ? {} : { 
+                'Authorization': `Bearer ${token}`
+            }
+            });
+            const data = await response.json();
+            console.log(response);
+
+            console.log(data);
+            return data
+
 
     }
 )
@@ -49,7 +53,6 @@ export const createPropjectById = createAsyncThunk(
         const user = await authService.getUser();
         project.OwnerID = user.sub;
 
-        try {
             const config = {
                 method: 'POST',
                 headers: {
@@ -63,10 +66,33 @@ export const createPropjectById = createAsyncThunk(
                 //return json
                 return json
 
-        } catch (error) {
-                //
-                console.log(error)
+
+    }
+)
+
+export const updatePropjectById = createAsyncThunk(
+    'todoitems/put',
+    async (project) => {
+        
+        const user = await authService.getUser();
+        project.OwnerID = user.sub;
+
+        console.log(project.Id);
+        const config = {
+            method: 'PUT',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(project)
         }
+        console.log(JSON.stringify(project));
+        const data = await fetch(`todoitems/${project.Id}`, config);
+        const json = await data.json()
+            //return json
+            console.log(json);
+            return json
+
 
     }
 )
@@ -76,11 +102,11 @@ export const projectsSlice = createSlice({
     initialState,
     reducers: {
 
-        removeProject: (state, action) => {
-            console.log(current(state.projects));
-            const filterProjects = state.projects.filter((project) => project.id !== action.payload);
-            state.projects = filterProjects;
-        },
+        // removeProject: (state, action) => {
+        //     console.log(current(state.projects));
+        //     const filterProjects = state.projects.filter((project) => project.id !== action.payload);
+        //     state.projects = filterProjects;
+        // },
 
         toggleCompleted: (state, action) => {
             const filterProjects = state.projects.map((project) =>
@@ -178,7 +204,6 @@ export const projectsSlice = createSlice({
 
         },
 
-
         sortProjects: (state, action) => {
 
             const sortType = action.payload;
@@ -236,6 +261,10 @@ export const projectsSlice = createSlice({
             }
             
         },
+        resetResponseState: (state, action) => {
+            state.response = null;
+
+        }
 
     },
     extraReducers: (builder) => {
@@ -252,39 +281,48 @@ export const projectsSlice = createSlice({
 
     })
     .addCase(fetchUserById.rejected, (state, action) => {
-        return (state = {
-            ...state,
-            status: "failed",
-          });
+        state.response = "failed";
+        state.message = "Opps, your projects are not available. Please try again later"
 
       })
       .addCase(deletePropjectById.fulfilled, (state, action) => {
+          state.response = "success";
+          state.message = "Project deleted"
           console.log(action.payload);
-          
-        return state;
-
+          const filterProjects = state.projects.filter((project) => project.id !== action.payload);
+          state.projects = filterProjects;
+                    
       })
       .addCase(deletePropjectById.rejected, (state, action) => {
-        return state;
-
+        state.response = "failed";
+        state.message = "Unable to delete project"
       })
       .addCase(createPropjectById.fulfilled, (state, action) => {
+        state.response = "success";
+        state.message = "Project created"
         console.log(action.payload);
         state.projects.push(action.payload);
 
-      return state;
-
     })
     .addCase(createPropjectById.rejected, (state, action) => {
+        state.response = "failed";
+        state.message = "Unable to create project"
+    })
+    .addCase(updatePropjectById.fulfilled, (state, action) => {
+        console.log(action.payload);
 
-      return state;
+
+    })
+    .addCase(updatePropjectById.rejected, (state, action) => {
+        console.log(action.payload);
+
 
     })
       
     }
 });
 
-export const { addProject, removeProject, toggleCompleted, togglePriority, toggleStatus, updateProjectName, updateCreatedDate, updateDueDate, updateNote, calculateTimelinePercentage, sortProjects } = projectsSlice.actions;
+export const { addProject, removeProject, toggleCompleted, togglePriority, toggleStatus, updateProjectName, updateCreatedDate, updateDueDate, updateNote, calculateTimelinePercentage, sortProjects, resetResponseState } = projectsSlice.actions;
 
 export default projectsSlice.reducer;
 

@@ -50,13 +50,16 @@ namespace DotnetReact.Controllers;
 
         }
 
-        // PUT: api/TodoItems/5
+        // PUT: TodoItems/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
         public async Task<IActionResult> PutTodoItem(long id, TodoItem todoItem)
         {
+            Console.WriteLine("put");
             if (id != todoItem.Id)
             {
+                Console.WriteLine("Bad request");
+
                 return BadRequest();
             }
 
@@ -65,19 +68,26 @@ namespace DotnetReact.Controllers;
             try
             {
                 await _context.SaveChangesAsync();
+                Console.WriteLine("saving");
+
+
             }
             catch (DbUpdateConcurrencyException)
             {
                 if (!TodoItemExists(id))
                 {
+                    Console.WriteLine("not found");
                     return NotFound();
                 }
                 else
                 {
+                    Console.WriteLine("error");
+
                     throw;
                 }
             }
-
+            Console.WriteLine(todoItem);
+            
             return NoContent();
         }
 
