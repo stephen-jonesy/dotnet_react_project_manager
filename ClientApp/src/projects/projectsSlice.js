@@ -207,6 +207,7 @@ export const projectsSlice = createSlice({
         sortProjects: (state, action) => {
 
             const sortType = action.payload;
+            console.log(sortType);
             if(sortType === 'dueDate') {
                 const sorted = [...state.projects].sort(function(a, b) {
                     var dateA = new Date(a.dueDate), dateB = new Date(b.dueDate);
@@ -231,6 +232,21 @@ export const projectsSlice = createSlice({
                 state.projects = sorted;
 
             } 
+            if(sortType === 'Status') {
+                const sorted = [...state.projects].sort((a, b) => {
+                    const sorter = {
+                      "None": 0,
+                      "Done": 1,
+                      "Doing": 2,
+                      "Stuck": 3,
+                    }
+                    return sorter[b.status] - sorter[a.status]
+                });
+    
+                state.projects = sorted;
+
+            } 
+
             if(sortType === 'Notes') {
                 const sorted = [...state.projects].sort((a, b) => {
                     return b.note.length - a.note.length;
@@ -248,7 +264,16 @@ export const projectsSlice = createSlice({
                 state.projects = sorted;
 
             } 
-            
+            if(sortType === 'projectName') {
+                const sorted = [...state.projects].sort(function(a, b){
+                    if(a[sortType.toLowerCase()] < b[sortType.toLowerCase()]) { return -1; }
+                    if(a[sortType.toLowerCase()] > b[sortType.toLowerCase()]) { return 1; }
+                    return 0;
+                });
+    
+                state.projects = sorted;
+
+            } 
             else {
                 const sorted = [...state.projects].sort(function(a, b){
                     if(a[sortType] < b[sortType]) { return -1; }
@@ -286,11 +311,12 @@ export const projectsSlice = createSlice({
 
       })
       .addCase(deletePropjectById.fulfilled, (state, action) => {
-          state.response = "success";
-          state.message = "Project deleted"
-          console.log(action.payload);
-          const filterProjects = state.projects.filter((project) => project.id !== action.payload);
-          state.projects = filterProjects;
+        state.response = "modified";
+        state.message = `Project deleted`
+
+        console.log(action.payload);
+        const filterProjects = state.projects.filter((project) => project.id !== action.payload);
+        state.projects = filterProjects;
                     
       })
       .addCase(deletePropjectById.rejected, (state, action) => {
@@ -298,9 +324,10 @@ export const projectsSlice = createSlice({
         state.message = "Unable to delete project"
       })
       .addCase(createPropjectById.fulfilled, (state, action) => {
-        state.response = "success";
-        state.message = "Project created"
         console.log(action.payload);
+
+        state.response = "success";
+        state.message = `Project created ${action.payload.name}`
         state.projects.push(action.payload);
 
     })

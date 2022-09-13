@@ -26,7 +26,7 @@ export function ProjectToolbar() {
                     
                 </div>
                 <div className="col-2">
-                    <button value="projectName" onClick={(e) => sortHandler(e)} style={SortType === "projectName" ? {opacity: '0.6'} : {opacity: '1'}}>
+                    <button value="name" onClick={(e) => sortHandler(e)} style={SortType === "name" ? {opacity: '0.6'} : {opacity: '1'}}>
                         Projects {chevron}
                     </button>
                 </div>
@@ -41,7 +41,7 @@ export function ProjectToolbar() {
                     </button>
                 </div>
                 <div className="col-2">
-                    <button value="status" onClick={(e) => sortHandler(e)} style={SortType === "status" ? {opacity: '0.6'} : {opacity: '1'}}>
+                    <button value="Status" onClick={(e) => sortHandler(e)} style={SortType === "Status" ? {opacity: '0.6'} : {opacity: '1'}}>
                         Status {chevron}
                     </button>
                 </div>

@@ -21,8 +21,7 @@
 .list-container {
   position: relative;
   width: 100%;
-  max-width: 875px;
-  margin: 25px 30px 0 30px;
+  margin: 100px 0 30px;
 
 }
 
@@ -33,7 +32,8 @@
 
 .project-button {
   position: absolute;
-  right: -30px;
+  top: -60px;
+  right: 0;
   width: 160px;
   height: 30px;
   background: rgba(9, 199, 225, 0.9);
@@ -133,6 +133,21 @@
 
 }
 
+.tooltip-inner .btn-primary {
+  margin: 2px 0;
+}
+
+.priority-btn {
+  all: unset;
+  width: 60px;
+  height: 22px;
+  color: white;
+  border-radius: 26px;
+  font-style: normal;
+  font-weight: 600;
+  font-size: 12px;
+}
+
 .project div {
   margin: auto;
 }
@@ -174,6 +189,17 @@
   cursor: grab;
   display: flex;
   align-items: center;
+}
+
+.tooltip-inner {
+  max-width: 200px;
+  padding: 0.25rem 0.5rem;
+  color: #fff;
+  text-align: center;
+  background-color: #fff;
+  border-radius: 0.25rem;
+  display: flex;
+  flex-direction: column;
 }
 
 
@@ -303,26 +329,33 @@ textarea {
 
 }
 
-@keyframes example {
-  0%   {top:-100px;}
-  50% {top:0px;}
-  100% {top:-100px;}
-}
+// @keyframes example {
+//   0%   {top:-100px;}
+//   50% {top:0px;}
+//   100% {top:-100px;}
+// }
 
 .alert {
   position: absolute;
-  top: -100px;
+  top: 100px;
+  display: none;
+  transition: display 2s;
 }
 
 .alert-success {
-  animation-name: example;
-  animation-duration: 2s;
-
-}
-.success-message {
-  background-color: green;
+  // animation-name: example;
+  // animation-duration: 2s;
+  display: block;
+  transition: display 3s;
 }
 
-.failed-message {
-  background-color: red;
+.alert-primary {
+  display: block;
+  transition: display 2s;
 }
+
+.alert-danger {
+  display: block;
+  transition: display 2s;
+}
+

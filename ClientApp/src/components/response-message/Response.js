@@ -12,14 +12,13 @@ export function Response() {
     useEffect(() => {
         setTimeout(() => {
             dispatch(resetResponseState());
-          }, 2000);
-      },[response]);
+          }, 1000);
+      },[response, message]);
+      
     const renderResponseMessage = () => {
-        setTimeout(() => {
-            dispatch(resetResponseState());
-          }, 2000);
+
         return (
-            <div className={ "alert" + (response === "success" ? " alert-success" : response === "failed" ? " alert-danger" : "")}>
+            <div className={ "alert " + (response === "success" ? " alert-success" : response === "modified" ? " alert-primary" : response === "failed" ? " alert-danger" : "")}>
                 {response}, {message}
 
             </div>

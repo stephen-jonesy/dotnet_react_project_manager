@@ -148,15 +148,16 @@ export function Project({ id, projectList }) {
                         rootClose="true"
                         overlay={
                             <Tooltip id="overlay" >
-                                <Button id="priority-toggle-btn" onClick={(e) => eventHandler(e.target)}>None</Button>
-                                <Button id="priority-toggle-btn" onClick={(e) => eventHandler(e.target)}>Low</Button>
-                                <Button id="priority-toggle-btn" onClick={(e) => eventHandler(e.target)}>Medium</Button>
-                                <Button id="priority-toggle-btn" onClick={(e) => eventHandler(e.target)}>High</Button>
+                                <Button id="priority-toggle-btn" style={{background: "#48484ecc"}} onClick={(e) => eventHandler(e.target)}>None</Button>
+                                <Button id="priority-toggle-btn" style={{background: "#33CE71"}} onClick={(e) => eventHandler(e.target)}>Low</Button>
+                                <Button id="priority-toggle-btn" style={{background: "#FA8035"}} onClick={(e) => eventHandler(e.target)}>Medium</Button>
+                                <Button id="priority-toggle-btn" style={{background: "#e01414cc"}} onClick={(e) => eventHandler(e.target)}>High</Button>
+
                             </Tooltip>
                             
                         }
                     >
-                        <button className="priority-btn col-6 btn-secondary" style={{background: priority === "None" ? "#48484ecc" : priority === "Low" ? "#33CE71" : priority === "Medium" ? "#FA8035" : priority === "High" ? "#e01414cc" : "#FA8035" }}> {priority}</button>
+                        <button className="priority-btn col-6 btn-secondary" style={{background: priority === "None" ? "#48484ecc" : priority === "Low" ? "#33CE71" : priority === "Medium" ? "#FA8035" : priority === "High" ? "#e01414cc" : "#48484ecc" }}> {priority}</button>
                     </OverlayTrigger>
                 </div>
                 <div className="devider"></div>
@@ -170,10 +171,10 @@ export function Project({ id, projectList }) {
                         rootClose="true"
                         overlay={
                             <Tooltip id="overlay" >
-                                <Button id="status-toggle-btn" onClick={(e) => eventHandler(e.target)}>None</Button>
-                                <Button id="status-toggle-btn" onClick={(e) => eventHandler(e.target)}>Stuck</Button>
-                                <Button id="status-toggle-btn" onClick={(e) => eventHandler(e.target)}>Doing</Button>
-                                <Button id="status-toggle-btn" onClick={(e) => eventHandler(e.target)}>Done</Button>
+                                <Button id="status-toggle-btn" style={{background: "#48484ecc"}} onClick={(e) => eventHandler(e.target)}>None</Button>
+                                <Button id="status-toggle-btn" style={{background: "#e01414cc"}} onClick={(e) => eventHandler(e.target)}>Stuck</Button>
+                                <Button id="status-toggle-btn" style={{background: "#FA8035"}} onClick={(e) => eventHandler(e.target)}>Doing</Button>
+                                <Button id="status-toggle-btn" style={{background: "#33CE71"}} onClick={(e) => eventHandler(e.target)}>Done</Button>
                             </Tooltip>
                             
                         }
